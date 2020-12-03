@@ -4,7 +4,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -129,7 +128,7 @@ public class BasqarElement {
      * @return true if element is exists
      */
     public boolean isExist(){
-        return $$(by).getElements().size()>0;
+        return driver.findElements(by).size()>0;
     }
 
     /**
@@ -151,7 +150,7 @@ public class BasqarElement {
      */
     public boolean isEnabled(){
         try {
-            driver.findElement(by);
+            driver.findElement(by).isEnabled();
             return true;
         }catch (Exception e){
             return false;
@@ -259,6 +258,7 @@ public class BasqarElement {
      */
     public BasqarElement find(By by){
         WebElement e = element;
+        this.by = by;
         element = e.findElement(by);
         return this;
     }
@@ -284,7 +284,6 @@ public class BasqarElement {
      * @param visibleText visible text
      */
     public void selectOptionWithText(String visibleText){
-        By ListOfOptions = By.cssSelector(listOfOptions_css);
         $(by).click();
         List<WebElement> list = $$(By.cssSelector(listOfOptions_css)).getElements();
         for (WebElement e : list){
